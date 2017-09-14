@@ -14,7 +14,11 @@ def aggregate_consumption():
     distinct_dates = sorted(set(each[0].date() for each in ConsumptionData.objects.values_list('dateinfo').distinct()))
 
     # Average and total consumption of all users in a day
-    consumption = [ConsumptionData.objects.filter(dateinfo__startswith=each).aggregate(agg=Avg('consumption'), tot=Sum('consumption')) for each in distinct_dates]
+    consumption = []
+    for each in distinct_dates:
+        aggr = ConsumptionData.objects.filter(dateinfo__startswith=each).aggregate(agg=Avg('consumption'), tot=Sum('consumption'))
+        consumption.append(aggr)
+
     avg_consumption = [each['agg'] for each in consumption]
     tot_consumption = [each['tot'] for each in consumption]
 
