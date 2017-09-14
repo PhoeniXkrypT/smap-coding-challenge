@@ -1,12 +1,13 @@
+
+import os
+import csv
+import datetime
+
 from django.core.management.base import BaseCommand
 from django.utils.timezone import get_current_timezone
 
 from dashboard.settings import DATA_PATH
 from consumption.models import UserData, ConsumptionData
-
-import os
-import csv
-import datetime
 
 class Command(BaseCommand):
     help = 'import data'
@@ -20,15 +21,20 @@ class Command(BaseCommand):
 
     def _populate_consumptiondata(self, dirpath):
         for filename in os.listdir(dirpath):
+            # User id of consumption data is the name of the file
+            # Remove the file extention to get the userid i.e. uid
             uid = filename.split('.')[0]
             filename = os.path.join(dirpath, filename)
+            # To avoid naive datetime
             tz = get_current_timezone()
             with open(filename) as inp:
                 reader = csv.reader(inp, delimiter=',')
                 objs = []
                 for row in reader:
                     if row[0][0] == 'd': continue
+                    # Convert to datetime object
                     datefield = datetime.datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
+                    # Making datefield timezone aware
                     datefield = tz.localize(datefield)
                     objs.append(ConsumptionData(dateinfo=datefield, consumption=row[1],\
                                 user=UserData.objects.get(userid=uid)))
