@@ -9,6 +9,11 @@ from models import UserData, ConsumptionData
 from graphos.sources.model import SimpleDataSource
 from graphos.renderers.gchart import LineChart, AreaChart
 
+def mainpage(request):
+    options = {'summary': 'Summary View', 'detail': 'Detailed View'}
+    context = {'options' : options.items()}
+    return render(request, 'consumption/main.html', context)
+
 # Function to calculate average and total consumption
 def aggregate_consumption():
     distinct_dates = sorted(set(each[0].date() for each in ConsumptionData.objects.values_list('dateinfo').distinct()))
@@ -45,7 +50,7 @@ def summary(request):
                       'colors': ['green']})
 
     # Data for user data table
-    users = UserData.objects.order_by('userid')
+    users = UserData.objects.all()
 
     context = {'avgchart': avgchart, 'totchart': totchart, 'users': users}
     return render(request, 'consumption/summary.html', context)
