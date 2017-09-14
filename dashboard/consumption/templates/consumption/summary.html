@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block content %}
-<h1>   Summary   </h1>
+<h2> Summary View</h2>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -14,7 +14,7 @@
 <center>
 {{ avgchart.as_html }}
 {{ totchart.as_html }}
-<br>
+<br> <br>
 {% render_table users %}
 </center>
 
