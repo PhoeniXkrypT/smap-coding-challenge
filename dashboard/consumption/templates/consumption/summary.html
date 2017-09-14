@@ -1,7 +1,21 @@
 {% extends 'consumption/layout.html' %}
 
+{% load render_table from django_tables2 %}
+{% load static %}
+
 {% block content %}
+<h1>   Summary   </h1>
 
-<h1>{{message}}</h1>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+</script>
 
-{% endblock %}
+<center>
+{{ avgchart.as_html }}
+{{ totchart.as_html }}
+<br>
+{% render_table users %}
+</center>
+
+{% endblock content %}
