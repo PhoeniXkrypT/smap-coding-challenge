@@ -52,6 +52,23 @@ def summary(request):
     return render(request, 'consumption/summary.html', context)
 
 def detail(request):
-    context = {
-    }
+    users = UserData.objects.values_list('userid', flat=True)
+    context = { 'users': users, }
     return render(request, 'consumption/detail.html', context)
+
+def user_detail(request, uid):
+    user = UserData.objects.get(userid=uid)
+    cdata = ConsumptionData.objects.filter(user=uid).annotate(d=TruncDate('dateinfo')).values('d').annotate(agg=Avg('consumption'))
+    xdata = [each['d'] for each in cdata]
+    avgdata = [each['agg'] for each in cdata]
+
+    # LineChart for average consumption
+    data = [['Date', 'Average consumption']] + [[x, av] for x, av in zip(xdata, avgdata)]
+    avgchart = LineChart(SimpleDataSource(data=data), options={'title': \
+                      'Average Energy Consumption of User %d from %s to %s' \
+                      %(int(uid), xdata[0], xdata[-1]), 'legend': {'position': 'top'}, \
+                      'vAxes': {0: {'title': 'Average energy consumption (Wh)'}},\
+                      'hAxes': {0: {'title': 'Date energy consumption data collected'}}})
+
+    context = {'user': user, 'avgchart': avgchart}
+    return render(request, 'consumption/userdetail.html', context)
