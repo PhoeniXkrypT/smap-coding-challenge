@@ -1,11 +1,6 @@
 {% extends 'consumption/layout.html' %}
 
-{% block extra_head %}
-<h1 align="center" style="font-family:verdana;"><p>Electricity Smart Meter</p></h1>
-{% endblock %}
-
 {% block content %}
-
 {% if options %}
  <ul>
   {% for name, opt in options %}
@@ -15,5 +10,4 @@
  {% else %}
  <p> No options available!</p>
  {% endif %}
-
-{% endblock %}
+{% endblock content %}
