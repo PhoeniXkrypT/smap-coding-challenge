@@ -1,0 +1,21 @@
+{% extends 'consumption/layout.html' %}
+
+{% block content %}
+<center>
+{% if user %}
+<h4> <p>USER DETAILS</p> </h4>
+<h4> <p>Userid: {{user.userid}}, Area: {{user.area}}, Tariff: {{user.tariff}}</p> </h4>
+<br>
+
+<h4> <p>ELECTRICITY CONSUMPTION DETAILS</p> </h4>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+ </script>
+{{ avgchart.as_html }}
+
+ {% else %}
+ <p> User not available!</p>
+ {% endif %}
+</center>
+{% endblock content %}

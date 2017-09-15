@@ -1,5 +1,14 @@
 {% extends 'consumption/layout.html' %}
 
 {% block content %}
-
-{% endblock %}
+<p> <h2> Detail View </h2> </p>
+{% if users %}
+ <ul>
+  {% for uid in users %}
+  <h4> <p> <a href="/detail/{{uid}}">{{ uid }}</a> </p> </h4>
+  {% endfor %}
+ </ul>
+ {% else %}
+ <p> No users present!</p>
+ {% endif %}
+{% endblock content %}

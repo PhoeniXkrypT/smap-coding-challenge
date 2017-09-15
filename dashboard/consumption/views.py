@@ -11,7 +11,7 @@ from graphos.sources.model import SimpleDataSource
 from graphos.renderers.gchart import LineChart, AreaChart
 
 def mainpage(request):
-    options = {'summary': 'Summary View', 'detail': 'Detailed View'}
+    options = {'summary': 'Summary View', 'detail': 'Detail View'}
     context = {'options' : options.items()}
     return render(request, 'consumption/main.html', context)
 
